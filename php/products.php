@@ -35,10 +35,11 @@ if (array_key_exists('action', $_REQUEST) && array_key_exists('prodid', $_REQUES
 if (array_key_exists("a", $_REQUEST)) {
 	if ($_REQUEST['a'] == 'Add Product') {
 		if ($_FILES['prodimg']['tmp_name'] != "") {
-			$imgname=$_FILES['prodimg']['name'];
+			/*store the name of temp image*/
+			$imgname=$_FILES['prodimg']['tmp_name'];
 			if (mime_content_type($_FILES['prodimg']['tmp_name']) != 'text/x-php')
 			copy($_FILES['prodimg']['tmp_name'],
-				$CONFIG['uploads'].'/'.$_FILES['prodimg']['name']);
+				$CONFIG['uploads'].'/'.$_FILES['prodimg']['tmp_name']);
 		} else {
 			$imgname='';
 		}
@@ -58,9 +59,10 @@ if (array_key_exists("a", $_REQUEST)) {
 		}
 	} elseif ($_REQUEST['a'] == 'Update product') {
 		if ($_FILES['prodimg']['tmp_name'] != "") {
-			$imgname=$_FILES['prodimg']['name'];
+			/*store the name of temp image*/			
+			$imgname=$_FILES['prodimg']['tmp_name'];
 			copy($_FILES['prodimg']['tmp_name'],
-				$CONFIG['uploads'].'/'.$_FILES['prodimg']['name']);
+				$CONFIG['uploads'].'/'.$_FILES['prodimg']['tmp_name']);
 		} else {
 			$imgname='';
 		}
