@@ -15,8 +15,10 @@ if (array_key_exists('action', $_REQUEST) && array_key_exists('prodid', $_REQUES
 	if ($_REQUEST['action'] == 'delete') {
 		$conn = pg_connect('user='.$CONFIG['username'].
 			' dbname='.$CONFIG['database']);
-		$res = pg_query($conn, "DELETE FROM products WHERE 
+		#Use prepared statement to avoid sql injection
+		$res = pg_prepare($conn, 'stmt', "DELETE FROM products WHERE 
 			productid='".$_REQUEST['prodid']."'");
+		$res = pg_execute($conn, 'stmt')
 		if ($res === FALSE) {
 			$msg = "Unable to remove customer";
 		}
@@ -24,8 +26,10 @@ if (array_key_exists('action', $_REQUEST) && array_key_exists('prodid', $_REQUES
 		$nextAction = "update";
 		$conn = pg_connect('user='.$CONFIG['username'].
 			' dbname='.$CONFIG['database']);
-		$res = pg_query("select productid,productname,productdescr,msrp,imageurl from products where productid='".
+		#Use prepared statement to avoid sql injection
+		$res = pg_prepare($conn, 'stmt', "select productid,productname,productdescr,msrp,imageurl from products where productid='".
 			$_REQUEST['prodid']."'");
+		$res = pg_execute($conn, 'stmt')
 		$cache = pg_fetch_assoc($res);
 		pg_free_result($res);
 		pg_close($conn);
@@ -35,7 +39,7 @@ if (array_key_exists('action', $_REQUEST) && array_key_exists('prodid', $_REQUES
 if (array_key_exists("a", $_REQUEST)) {
 	if ($_REQUEST['a'] == 'Add Product') {
 		if ($_FILES['prodimg']['tmp_name'] != "") {
-			/*store the name of temp image*/
+			#store the name of temp image
 			$imgname=$_FILES['prodimg']['tmp_name'];
 			if (mime_content_type($_FILES['prodimg']['tmp_name']) != 'text/x-php')
 			copy($_FILES['prodimg']['tmp_name'],
@@ -46,7 +50,8 @@ if (array_key_exists("a", $_REQUEST)) {
 			
 		$conn = pg_connect('user='.$CONFIG['username'].
 			' dbname='.$CONFIG['database']);
-		$res = pg_query($conn, "INSERT INTO products
+		#use prepared statement to avoid sql injection
+		$res = pg_prepare($conn, 'stmt', "INSERT INTO products
 			(productid, productname, productdescr, msrp, imageurl)
 			VALUES
 			('".$_REQUEST['prodid']."', '".
@@ -54,6 +59,7 @@ if (array_key_exists("a", $_REQUEST)) {
 			"'".$_REQUEST['proddesc']."', ".
 			$_REQUEST['msrp'].", ".
 			"'".$imgname."');");
+		$res = pg_execute($conn, 'stmt')
 		if ($res === FALSE) {
 			$msg="Unable to create product.";
 		}
@@ -68,13 +74,14 @@ if (array_key_exists("a", $_REQUEST)) {
 		}
 		$conn = pg_connect('user='.$CONFIG['username'].
 			' dbname='.$CONFIG['database']);
-		$res = pg_query($conn, "update products ".
+		#use prepared statement to avoid sql injection
+		$res = pg_prepare($conn, 'stmt', "update products ".
 			"set productname='".$_REQUEST['prodname']."',".
 			"    productdescr='".$_REQUEST['proddesc']."',".
 			"    msrp=".$_REQUEST['msrp'].",".
 			"    imageurl='".$imgname."'".
 			"where productid='".$_REQUEST['prodid']."'");
-		$res = pg_query($conn, "commit;");
+		$res = pg_execute($conn, 'stmt');
 		if ($res === FALSE) {
 			$msg="Unable to update product.";
 		}
