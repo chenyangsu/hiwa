@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 if (array_key_exists('login', $_REQUEST) &&
     array_key_exists('password', $_REQUEST)) {
  	require 'config.phplib';
@@ -9,19 +11,15 @@ if (array_key_exists('login', $_REQUEST) &&
 		WHERE login='".$_REQUEST['login']."'
 	    AND password='".$_REQUEST['password']."'')
 	$result = pg_execute($conn, 'stmt')
-/*	$result = pg_query("SELECT * from users
-	    WHERE login='".$_REQUEST['login']."'
-	    AND password='".$_REQUEST['password']."'");*/
 	$row = pg_fetch_assoc($result);
 	if ($row === False) {
 		require 'header.php';
 		print '<div class="err">Incorrect username/password</div>';
 		exit();
 	}
-	setcookie("hiwa-user", $_REQUEST['login']);
-	setcookie("hiwa-role", $row['role']);
+	$_SESSION['user'] = $_REQUEST['login'];
+	$_SESSION['role'] = $row['role'];
 	Header("Location: menu.php");
-	exit();
 }
 ?>
 

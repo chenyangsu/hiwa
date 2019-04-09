@@ -2,13 +2,12 @@
 require 'config.phplib';
 
 $msg="";
-if (!array_key_exists('hiwa-user', $_COOKIE) ||
-    !array_key_exists('hiwa-role', $_COOKIE)) {
+if (isset($_SESSION['user']===false)){
 	Header("Location: login.php");
 	exit();
 }
 
-$role=$_COOKIE['hiwa-role'];
+$role=$_SESSION['role'];
 
 if (array_key_exists('a', $_REQUEST)) {
 $conn = pg_connect("user=".$CONFIG['username']." dbname=".$CONFIG['database']);
@@ -36,7 +35,7 @@ else
 <body>
 <?php require 'header.php';?>
 <div class="title">HIWA Manage Orders</div>
-<div class="subtitle">Logged in as <?php echo $_COOKIE['hiwa-user'];?>
+<div class="subtitle">Logged in as <?php echo $_SESSION['user'];?>
 	(<?php echo $role; ?>)
 </div>
 

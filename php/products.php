@@ -2,13 +2,12 @@
 require 'config.phplib';
 
 $msg="";
-if (!array_key_exists('hiwa-user', $_COOKIE) ||
-    !array_key_exists('hiwa-role', $_COOKIE)) {
+if (isset($_SESSION['user']===false)){
 	Header("Location: login.php");
 	exit();
 }
 
-$role=$_COOKIE['hiwa-role'];
+$role=$_SESSION['role'];
 
 $nextAction = "blank";
 if (array_key_exists('action', $_REQUEST) && array_key_exists('prodid', $_REQUEST)) {
@@ -99,7 +98,7 @@ if (array_key_exists("a", $_REQUEST)) {
 <body>
 <?php require 'header.php';?>
 <div class="title">HIWA Manage Products</div>
-<div class="subtitle">Logged in as <?php echo $_COOKIE['hiwa-user'];?>(<?php 
+<div class="subtitle">Logged in as <?php echo $_SESSION['user'];?>(<?php 
 	echo $role; ?>)
 </div>
 
