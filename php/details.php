@@ -146,12 +146,13 @@ while (($row = pg_fetch_assoc($res)) !== false) {
 	</select></td>
 </tr>
 <tr>
+	#Only allow positive numeric inputs for 'amount' and 'price'
 	<td>Amount</td>
-	<td><input type="text" size="10" name="amount"></td>
+	<td><input type="number" min="0" size="10" name="amount"></td>
 </tr>
 <tr>
 	<td>Price each</td>
-	<td><input type="text" size="10" name="price"></td>
+	<td><input type="number" min="0" size="10" name="price"></td>
 </tr>
 </table>
 
