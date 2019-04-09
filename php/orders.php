@@ -12,12 +12,14 @@ $role=$_COOKIE['hiwa-role'];
 
 if (array_key_exists('a', $_REQUEST)) {
 $conn = pg_connect("user=".$CONFIG['username']." dbname=".$CONFIG['database']);
-$res = pg_query_params($conn, "INSERT INTO orders
+#Use prepared statement to validate inputs
+$res = pg_prepare($conn, 'insert_order', "INSERT INTO orders
 	(orderid, customerid, status)
 	VALUES ($1, $2, $3)", array( 
 		$_REQUEST['orderid'], 
 		$_REQUEST['custid'],
 		$_REQUEST['status'] ) );
+$res = pg_execute($conn, 'insert_order')
 pg_free_result($res);
 pg_close($conn);	
 }
