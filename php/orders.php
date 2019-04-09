@@ -23,6 +23,7 @@ $res = pg_execute($conn, 'insert_order')
 pg_free_result($res);
 pg_close($conn);	
 }
+else
 ?>
 
 
@@ -90,16 +91,21 @@ pg_free_result($res);
 	pg_close($conn);
 	echo '</select></td>';?>
 </tr>
-<tr>
-	<td>Status</td>
-	<td><select name="status">
-<option value="new">New</option>
-<option value="prepared">Prepared</option>
-<option value="shipped">Shipped</option>
-<option value="billed">Billed</option>
-<option value="paid">Paid</option>
-</select></td>
-</tr>
+#Set up access control to avoid customers change the status
+<?php if($role = 'admin'){ ?>
+	<tr>
+		<td>Status</td>
+		<td><select name="status">
+	<option value="new">New</option>
+	<option value="prepared">Prepared</option>
+	<option value="shipped">Shipped</option>
+	<option value="billed">Billed</option>
+	<option value="paid">Paid</option>
+	</select></td>
+	</tr>
+<?php }
+?>
+
 </table>
 <p>
 <input type="submit" name="a" value="Create order">
