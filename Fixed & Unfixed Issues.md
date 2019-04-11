@@ -12,6 +12,6 @@
 
 1. In check.php, it asks users to check and submit if the username is exist is vulnerable, since attackers would utlize it to find existed users. However, I did not fix it since the page is accessible to public, it is insecure anyway :)
 
-2. Web directory listingUnable to fix from the code since I do not have access to the server hosting the website. Here is an article desribes clearly how to disable it:
+2. Web directory listing: Unable to fix from the code since I do not have access to the server hosting the website. Here is an article desribes clearly how to disable it:
 
    <https://www.tecmint.com/disable-apache-directory-listing-htaccess/>
